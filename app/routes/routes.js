@@ -11,7 +11,7 @@ router.route('/')
 router.route('/load_list')
 	.get(async (req, res) => {
 		try {
-			let list = Guests.loadList(req)
+			let list = await Guests.loadList(req)
 			res.send(list)
 		} catch(error) {
 			res.send(error)
@@ -53,8 +53,8 @@ router.route('/get_all_guests')
 router.route('/update_guest')
 	.post(async (req, res) => {
 		try {
-			let updatedGuest = await Guests.updateGuest(req.body)
-			res.send(updateGuest)
+			let guest = await Guests.updateGuest(req.body)
+			res.send(guest)
 		} catch(error) {
 			res.send(error)
 		}
@@ -63,8 +63,8 @@ router.route('/update_guest')
 router.route('/update_guest/:id')
 	.post(async (req, res) => {
 		try {
-			let results = await Guests.updateGuest(req.body, req.params.id)
-			res.send(results)
+			let guest = await Guests.updateGuest(req.body, req.params.id)
+			res.send(guest)
 		} catch(error) {
 			res.send(error)
 		}
