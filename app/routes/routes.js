@@ -29,10 +29,20 @@ router.route('/find_guests_by')
 		}
 	})
 
-router.route('/get_guest/:id')
+router.route('/get_guests/:code')
 	.get(async (req, res) => {
 		try {
-			let guest = await Guests.getGuest(req.params.id)
+			let guest = await Guests.getGuests(req.params.code)
+			res.send(guest)
+		} catch(error) {
+			res.send(error)
+		}
+	})
+
+router.route('/get_guests/:code/:mammoth')
+	.get(async (req, res) => {
+		try {
+			let guest = await Guests.getGuests(req.params.code, req.params.mammoth)
 			res.send(guest)
 		} catch(error) {
 			res.send(error)
@@ -69,6 +79,8 @@ router.route('/update_guest/:id')
 			res.send(error)
 		}
 	})
+
+// router.route('/')
 
 // Delete
 router.route('/delete_guest/:id')
