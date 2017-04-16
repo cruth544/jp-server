@@ -106,9 +106,9 @@ const Guests = {
 			let _id = ObjectId(id || data._id)
 			data._id = _id
 			data.Total = Number(data.Total)
-			data.Mammoth = data.Mammoth == true
-			data.TanakaFarms = data.TanakaFarms == true
-			data.Unsure = data.Unsure == true
+			data.Mammoth = data.Mammoth == 'true'
+			data.TanakaFarms = data.TanakaFarms == 'true'
+			data.Unsure = data.Unsure == 'true'
 			try {
 				let { lastErrorObject } = await db.guest_list.findOneAndUpdate(
 					{ _id },
@@ -122,6 +122,40 @@ const Guests = {
 			} catch(error) {
 				console.log(error)
 				reject(error)
+			}
+		})
+	},
+
+	resetGuest(_id) {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let guest = await db.guest_list.findOne({ _id: ObjectId(_id) })
+				guest.Going = null
+				guest.Responded = null
+				guest.Dish = ''
+				guest.Guest = guest.Total > 1 ? { FirstName: '', LastName: '', Dish: '' } : null
+				let { result } = await db.guest_list.save(guest)
+				resolve(guest)
+			} catch (e) {  }
+		})
+	},
+
+	resetRSVP(code) {
+		return new Promise(async (resolve, reject) => {
+			try {
+				let updated = {
+					Going: null,
+					Responded: null,
+					Dish: '',
+					Guest: { FirstName: '', LastName: '', Dish: '' }
+				}
+				let result = await db.guest_list.updateMany(
+					{ Code: code },
+					{ $set: updated }
+				)
+				resolve(result)
+			} catch (e) {
+				e
 			}
 		})
 	},
