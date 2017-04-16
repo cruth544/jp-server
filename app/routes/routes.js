@@ -80,6 +80,28 @@ router.route('/update_guest/:id')
 		}
 	})
 
+router.route('/reset_guest/:_id')
+	.get(async (req, res) => {
+		try {
+			let guest = await Guests.resetGuest(req.params._id)
+			res.send(guest)
+		} catch(error) {
+			res.send(error)
+		}
+	})
+
+router.route('/reset_rsvp/:code')
+	.get(async (req, res) => {
+		try {
+			let guests = await Guests.resetRSVP(req.params.code)
+			res.send(guests)
+		} catch(error) {
+			res.send(error)
+		}
+	})
+
+
+
 // router.route('/')
 
 // Delete
