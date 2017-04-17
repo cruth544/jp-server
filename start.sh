@@ -1,8 +1,11 @@
 #!/bin/bash
 echo "setting iptables"
-sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8000
+PORT=8000
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports $PORT
 echo "starting mongo"
 sudo service mongod start
 echo "starting node"
-npm start
+nohup node server.js &
+echo "running node on port $PORT with pid $!"
+echo $! > running_pid.txt
 
